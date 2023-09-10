@@ -1,7 +1,7 @@
 <script>
   import { goto } from '$app/navigation';
-  import Navbar from '$lib/partials/Navbar.svelte';
-  import Footer from '$lib/partials/Footer.svelte';
+  import Navbar from '$lib/components/partials/Navbar.svelte';
+  import Footer from '$lib/components/partials/Footer.svelte';
 </script>
 <Navbar />
   <div>

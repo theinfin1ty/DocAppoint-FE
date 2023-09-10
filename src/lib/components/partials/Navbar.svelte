@@ -1,6 +1,6 @@
 <script>
 	import { user } from '$lib/utils/store';
-	import { goto } from "$app/navigation";
+	import { goto } from '$app/navigation';
 	import { logout } from '$lib/utils/firebase';
 </script>
 
@@ -56,7 +56,7 @@
 			<div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
 				<div class="flex flex-shrink-0 items-center">
 					<a
-						href="/"
+						href="/dashboard"
 						class="text-gray-300 hover:text-white rounded-md px-3 py-2 text-base font-medium"
 						>DocAppoint</a
 					>
@@ -64,28 +64,23 @@
 				<div class="hidden sm:ml-6 sm:block">
 					<div class="flex space-x-4">
 						<!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-						{#if $user?.profile?.role == 'client'}
+						{#if $user?.profile?.role}
 							<a
-								href="#"
+								href="/dashboard"
 								class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-								>All Appointments</a
+								>Upcoming Appointments</a
 							>
 							<a
-								href="#"
+								href="/all"
 								class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-								>New Appointment</a
+								>All Appointments</a
 							>
 						{/if}
-						{#if $user?.profile?.role == 'doctor'}
+						{#if $user?.profile?.role == 'client'}
 							<a
-								href="#"
+								href="/new"
 								class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-								>Today's Appointments</a
-							>
-							<a
-								href="#"
-								class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-								>All Appointments</a
+								>New Appointment</a
 							>
 						{/if}
 						{#if $user?.profile?.role == 'admin'}
@@ -114,7 +109,7 @@
 								await logout();
 								$user = null;
 								window.localStorage.setItem('authToken', null);
-								goto('/login?page=login')
+								goto('/login?page=login');
 							}}
 							on:keydown={() => {}}
 							href={'#'}

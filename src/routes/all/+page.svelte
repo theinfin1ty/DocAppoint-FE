@@ -30,10 +30,6 @@
       loading = false;
     }
   }
-
-  const onAction = (action) => {
-
-  }
 </script>
 <Navbar />
 {#if loading}
@@ -43,9 +39,8 @@
   {#await getAppointments() then _}
   <AppointmentsTable
     {appointments}
-    {onAction}
     {pagination}
-    heading={'Upcoming Appointments'}
+    heading={'All Appointments'}
   />
   {/await}
 </div>
