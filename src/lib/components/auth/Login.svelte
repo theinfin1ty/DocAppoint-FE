@@ -1,10 +1,10 @@
 <script>
 	import { onMount } from 'svelte';
-	import { goto } from "$app/navigation";
+	import { goto } from '$app/navigation';
 	import { createQueryStore } from '$lib/utils/queryStore.js';
 	import { loginWithEmailAndPassword } from '$lib/utils/firebase.js';
 	import { user as userStore } from '$lib/utils/store.js';
-	import { getUserProfile } from '$lib/api/user'
+	import { getUserProfile } from '$lib/api/user';
 
 	const page = createQueryStore('page');
 	const user = {
@@ -23,7 +23,7 @@
 			user.password,
 			async (res) => {
 				$userStore = res;
-				window.localStorage.setItem('authToken', $userStore?.accessToken)
+				window.localStorage.setItem('authToken', $userStore?.accessToken);
 				const userProfile = await getUserProfile(window);
 				$userStore.profile = userProfile;
 				goto('/dashboard');
@@ -34,6 +34,16 @@
 				goto('/login?page=login');
 			}
 		);
+	};
+
+	const handleAccountRegistration = async () => {
+		if(user?.password !== user?.confirmPassword) {
+			return;
+		}
+	}
+
+	const handleForgotPasswordInitiation = () => {
+		
 	}
 </script>
 
@@ -41,24 +51,36 @@
 	<div class="inset-0 mx-auto flex max-w-md items-center overflow-y-auto p-8">
 		<div class="form-wrapper w-full py-6">
 			<div class="tabs mb-6 mt-2 text-sm">
-				<button
-					on:click={() => {
-						$page = 'login';
-					}}
-					class="btn-tab active m-0 border-b-4 border-blue-950 px-2 py-1.5 font-medium text-blue-950 {$page !=
-					'login'
-						? 'opacity-50'
-						: ''}">Login With Existing Account</button
-				>
-				<button
-					on:click={() => {
-						$page = 'register';
-					}}
-					class="btn-tab active ml-2 border-b-4 border-blue-950 px-2 py-1.5 font-medium text-blue-950 {$page !=
-					'register'
-						? 'opacity-50'
-						: ''}">Register New Account</button
-				>
+				{#if $page != 'forgot'}
+					<button
+						on:click={() => {
+							$page = 'login';
+						}}
+						class="btn-tab active m-0 border-b-4 border-blue-950 px-2 py-1.5 font-medium text-blue-950 {$page !=
+						'login'
+							? 'opacity-50'
+							: ''}">Login With Existing Account</button
+					>
+					<button
+						on:click={() => {
+							$page = 'register';
+						}}
+						class="btn-tab active ml-2 border-b-4 border-blue-950 px-2 py-1.5 font-medium text-blue-950 {$page !=
+						'register'
+							? 'opacity-50'
+							: ''}">Register New Account</button
+					>
+				{:else}
+					<button
+						on:click={() => {
+							$page = 'forgot';
+						}}
+						class="btn-tab w-full active border-b-4 border-blue-950 px-2 py-1.5 font-medium text-blue-950 {$page !=
+						'forgot'
+							? 'opacity-50'
+							: ''}">Forgot Password ?</button
+					>
+				{/if}
 			</div>
 			<div>
 				{#if $page == 'login'}
@@ -87,7 +109,7 @@
 							/>
 						</div>
 						<div class="mb-3">
-							<a class="text-blue-500 underline text-sm hover:text-blue-700" href="/forgot"
+							<a class="text-blue-500 underline text-sm hover:text-blue-700" href="/login?page=forgot"
 								>Forgot Password?</a
 							>
 						</div>
@@ -110,6 +132,7 @@
 								name="email"
 								placeholder="you@example.com"
 								required
+								bind:value={user.email}
 							/>
 						</div>
 						<div class="mb-3">
@@ -120,6 +143,7 @@
 								id="password"
 								name="password"
 								required
+								bind:value={user.password}
 							/>
 						</div>
 						<div class="mb-3">
@@ -130,12 +154,35 @@
 								id="confirm-password"
 								name="confirm-password"
 								required
+								bind:value={user.confirmPassword}
 							/>
 						</div>
 						<div class="flex justify-center items-center">
 							<button
 								class="border rounded-lg p-3 w-full bg-blue-500 text-white hover:bg-blue-700"
 								type="submit">Register</button
+							>
+						</div>
+					</form>
+				{/if}
+				{#if $page == 'forgot'}
+					<form class="mb-3">
+						<div class="mb-3">
+							<label class="text-sm" for="email">Enter Your Registered Email:</label>
+							<input
+								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
+								type="email"
+								id="email"
+								name="email"
+								placeholder="you@example.com"
+								required
+								bind:value={user.email}
+							/>
+						</div>
+						<div class="flex justify-center items-center">
+							<button
+								class="border rounded-lg p-3 w-full bg-blue-500 text-white hover:bg-blue-700"
+								type="submit">Submit</button
 							>
 						</div>
 					</form>

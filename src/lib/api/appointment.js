@@ -28,3 +28,11 @@ export const getAppointment = async (window, id) => {
 	});
   return response.data;
 };
+
+export const updateAppointment = async (window, id, data) => {
+	commonHeaders.Authorization = `Bearer ${window.localStorage.getItem('authToken')}`;
+	const response = await axios.patch(`${process.env.BASE_URL}/api/appointments/${id}`, data, {
+		headers: commonHeaders
+	});
+	return response.data;
+}

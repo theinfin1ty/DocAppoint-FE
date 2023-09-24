@@ -139,12 +139,13 @@
 					answers, keep in touch, grow your business, and more.
 				</p>
 			</caption>
-			<thead class="text-xs text-gray-700 uppercase bg-gray-200">
-				<tr>
-					<th scope="col" class="px-6 py-3">
-						<div class="flex items-center">
-							Patient name
-							<!-- <a href="#"
+			{#if appointments?.length}
+				<thead class="text-xs text-gray-700 uppercase bg-gray-200">
+					<tr>
+						<th scope="col" class="px-6 py-3">
+							<div class="flex items-center">
+								Patient name
+								<!-- <a href="#"
 								><svg
 									class="w-3 h-3 ml-1.5"
 									aria-hidden="true"
@@ -157,12 +158,12 @@
 									/>
 								</svg></a
 							> -->
-						</div>
-					</th>
-					<th scope="col" class="px-6 py-3">
-						<div class="flex items-center">
-							Age
-							<!-- <a href="#"
+							</div>
+						</th>
+						<th scope="col" class="px-6 py-3">
+							<div class="flex items-center">
+								Age
+								<!-- <a href="#"
 								><svg
 									class="w-3 h-3 ml-1.5"
 									aria-hidden="true"
@@ -175,12 +176,12 @@
 									/>
 								</svg></a
 							> -->
-						</div>
-					</th>
-					<th scope="col" class="px-6 py-3">
-						<div class="flex items-center">
-							Date
-							<!-- <a href="#"
+							</div>
+						</th>
+						<th scope="col" class="px-6 py-3">
+							<div class="flex items-center">
+								Date
+								<!-- <a href="#"
 								><svg
 									class="w-3 h-3 ml-1.5"
 									aria-hidden="true"
@@ -193,12 +194,12 @@
 									/>
 								</svg></a
 							> -->
-						</div>
-					</th>
-					<th scope="col" class="px-6 py-3">
-						<div class="flex items-center">
-							Slot
-							<!-- <a href="#"
+							</div>
+						</th>
+						<th scope="col" class="px-6 py-3">
+							<div class="flex items-center">
+								Slot
+								<!-- <a href="#"
 								><svg
 									class="w-3 h-3 ml-1.5"
 									aria-hidden="true"
@@ -211,12 +212,12 @@
 									/>
 								</svg></a
 							> -->
-						</div>
-					</th>
-					<th scope="col" class="px-6 py-3">
-						<div class="flex items-center">
-							Status
-							<!-- <a href="#"
+							</div>
+						</th>
+						<th scope="col" class="px-6 py-3">
+							<div class="flex items-center">
+								Status
+								<!-- <a href="#"
 								><svg
 									class="w-3 h-3 ml-1.5"
 									aria-hidden="true"
@@ -229,30 +230,35 @@
 									/>
 								</svg></a
 							> -->
-						</div>
-					</th>
-					<th scope="col" class="px-6 py-3">
-						<div class="flex items-center">Action</div>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each appointments as appointment}
-					<tr class="bg-white border-b hover:bg-gray-100">
-						<td class="capitalize px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-							{appointment?.name}
-						</td>
-						<td class="px-6 py-4 capitalize">{appointment?.age}</td>
-						<td class="px-6 py-4 capitalize">{moment(appointment?.date).format('LL')}</td>
-						<td class="px-6 py-4 capitalize">{appointment?.slot}</td>
-						<td class="px-6 py-4 capitalize">{appointment?.status}</td>
-						<td class="px-6 py-4 capitalize">
-							<a href={`/view/${appointment?._id}`} class="font-medium text-blue-600 hover:underline">View</a>
-						</td>
+							</div>
+						</th>
+						<th scope="col" class="px-6 py-3">
+							<div class="flex items-center">Action</div>
+						</th>
 					</tr>
-				{/each}
-			</tbody>
+				</thead>
+				<tbody>
+					{#each appointments as appointment}
+						<tr class="bg-white border-b hover:bg-gray-100">
+							<td class="capitalize px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+								{appointment?.name}
+							</td>
+							<td class="px-6 py-4 capitalize">{appointment?.age}</td>
+							<td class="px-6 py-4 capitalize">{moment(appointment?.date).format('LL')}</td>
+							<td class="px-6 py-4 capitalize">{appointment?.slot}</td>
+							<td class="px-6 py-4 capitalize">{appointment?.status}</td>
+							<td class="px-6 py-4 capitalize">
+								<a
+									href={`/view/${appointment?._id}`}
+									class="font-medium text-blue-600 hover:underline">View</a
+								>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			{/if}
 		</table>
+		{#if appointments?.length}
 		<nav
 			class="flex items-center justify-between pt-1 bg-gray-50 px-3 pb-3"
 			aria-label="Table navigation"
@@ -313,5 +319,6 @@
 				</button>
 			</div>
 		</nav>
+		{/if}
 	</div>
 </div>

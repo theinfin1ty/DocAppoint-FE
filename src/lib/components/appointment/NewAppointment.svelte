@@ -1,6 +1,6 @@
 <script>
 	import * as moment from 'moment-timezone';
-	import { createAppointment, getAppointment } from '$lib/api/appointment';
+	import { createAppointment, getAppointment, updateAppointment } from '$lib/api/appointment';
 	import { goto } from '$app/navigation';
 	import Loader from '$lib/components/partials/Loader.svelte';
 	import { onMount } from 'svelte';
@@ -11,15 +11,14 @@
 	let loading = false;
 
 	onMount(async () => {
-		console.log(appointmentId)
-		if(appointmentId) {
+		if (appointmentId) {
 			await fetchAppointment();
 		}
 
-		if(appointment?.date) appointment.date = moment(appointment.date).format('YYYY-MM-DD');
+		if (appointment?.date) appointment.date = moment(appointment.date).format('YYYY-MM-DD');
 	});
 
-	const handleAppointmentCreation = async () => {
+	const handleAppointmentSubmit = async () => {
 		try {
 			const { name, age, date, purpose } = appointment;
 			if (!name || !age || !date || !purpose) {
@@ -27,7 +26,11 @@
 				return;
 			}
 			loading = true;
-			await createAppointment(window, appointment);
+			if (appointment?._id) {
+				await updateAppointment(window, appointment?._id, appointment);
+			} else {
+				await createAppointment(window, appointment);
+			}
 			loading = false;
 			goto('/dashboard');
 		} catch (error) {
@@ -35,22 +38,9 @@
 		}
 	};
 
-	const handleAppointmentUpdate = async () => {
-		try {
-			const { name, age, date, purpose } = appointment;
-			if (!name || !age || !date || !purpose) {
-				showErrors = true;
-				return;
-			}
-			loading = false;
-		} catch (error) {
-			loading = false;
-		}
-	};
-
 	const fetchAppointment = async () => {
 		try {
-			appointment = await getAppointment(window, $appointmentId)
+			appointment = await getAppointment(window, appointmentId);
 			loading = false;
 		} catch (error) {
 			console.log(error);
@@ -63,9 +53,11 @@
 	<Loader />
 {/if}
 <div class="flex flex-col justify-center items-center mt-10">
-	<h1 class="text-center text-2xl font-bold mb-6">{appointment?._id ? 'Update' : 'New'} Appointment</h1>
+	<h1 class="text-center text-2xl font-bold mb-6">
+		{appointment?._id ? 'Update' : 'New'} Appointment
+	</h1>
 	<div class="w-6/12 mx-auto">
-		<form on:submit|preventDefault={handleAppointmentCreation} novalidate>
+		<form on:submit|preventDefault={handleAppointmentSubmit} novalidate>
 			<div class="mb-4">
 				<label class="text-sm font-semibold" for="name">Patient Name:</label>
 				<input

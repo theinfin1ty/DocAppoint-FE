@@ -21,7 +21,9 @@
 
   const getAppointments = async () => {
     try {
-      const response = await getAllAppointments(window, {})
+      const response = await getAllAppointments(window, {
+        type: 'upcoming'
+      })
       appointments = response.data;
       pagination = response.pagination;
       loading = false;
