@@ -23,11 +23,11 @@
 		}
 	};
 
-	const handleAppointmentCancellation = async () => {
+	const handleAppointmentCompletion = async () => {
 		try {
 			loading = true;
-			await updateAppointment(window, appointment?._id, { status: 'cancelled' });
-			goto('/dashboard')
+			await updateAppointment(window, appointment?._id, { status: 'completed', remark: appointment?.remark });
+			goto('/dashboard');
 			loading = false;
 		} catch (error) {
 			loading = false;
@@ -56,17 +56,24 @@
 		<div class="mb-3">
 			Time Slot: <strong class="capitalize">{appointment.slot}</strong>
 		</div>
-		<div class="mb-3">
+    <div class="mb-3">
 			Appointment Status: <strong class="text-red-500 capitalize">{appointment.status}</strong>
 		</div>
 		<div class="mb-3">
 			Purpose of visit: <strong>{appointment.purpose}</strong>
 		</div>
-		{#if appointment.status == 'completed'}
-			<div class="mb-3">
-				Remarks / Prescription: <strong>{appointment?.remark || 'Not Provided'}</strong>
-			</div>
-		{/if}
+		<div class="mb-3">
+      <label for="purpose" class="">Remarks:</label>
+      <textarea
+        class="border rounded px-3 py-2 w-full border-gray-300"
+        name="appointment[purpose]"
+        id="purpose"
+        cols="30"
+        rows="3"
+        required={true}
+        bind:value={appointment.remark}
+      />
+    </div>
 		<div
 			class="flex flex-col sm:flex-row justify-center sm:justify-between items-center space-y-3 sm:space-y-0"
 		>
@@ -76,26 +83,14 @@
 					goto(`/dashboard`);
 				}}>Back</button
 			>
-			{#if appointment?.status === 'active'}
 			<div class="space-x-6">
 				<button
-					class="border text-white bg-blue-800 py-2 px-3 rounded-md hover:bg-blue-700"
+					class="border text-white bg-green-600 py-2 px-3 rounded-md hover:bg-green-700"
 					on:click={() => {
-						if($user?.profile?.role === 'doctor') {
-							goto(`/start/${appointment._id}`);
-						} else {
-							goto(`/new?appointmentId=${appointment._id}`);
-						}
-					}}>{$user?.profile?.role === 'doctor' ? 'Start' : 'Edit'} Appointment</button
-				>
-				<button
-					class="border text-white bg-red-600 py-2 px-3 rounded-md hover:bg-red-700"
-					on:click={() => {
-						handleAppointmentCancellation();
-					}}>{$user?.profile?.role === 'doctor' ? 'Reject' : 'Cancel'} Appointment</button
+						handleAppointmentCompletion();
+					}}>Complete Appointment</button
 				>
 			</div>
-			{/if}
 		</div>
 	</div>
 </div>

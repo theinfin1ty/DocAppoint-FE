@@ -9,7 +9,6 @@
 
   onMount(() => {
     onAuthStateChanged(auth, async (fireUser) => {
-      console.log(fireUser);
       if(fireUser) {
         $user = fireUser;
         window.localStorage.setItem('authToken', $user?.accessToken)

@@ -4,7 +4,7 @@
 	import { createQueryStore } from '$lib/utils/queryStore.js';
 	import { loginWithEmailAndPassword } from '$lib/utils/firebase.js';
 	import { user as userStore } from '$lib/utils/store.js';
-	import { getUserProfile } from '$lib/api/user';
+	import { getUserProfile, registerUser } from '$lib/api/user';
 
 	const page = createQueryStore('page');
 	const user = {
@@ -40,10 +40,16 @@
 		if(user?.password !== user?.confirmPassword) {
 			return;
 		}
+		await registerUser(window, user);
+		await handleLoginWithEmailAndPassword();
 	}
 
 	const handleForgotPasswordInitiation = () => {
-		
+		if(!user?.email) {
+			return;
+		}
+
+
 	}
 </script>
 
@@ -122,7 +128,7 @@
 					</form>
 				{/if}
 				{#if $page == 'register'}
-					<form class="mb-3">
+					<form class="mb-3" on:submit|preventDefault={handleAccountRegistration}>
 						<div class="mb-3">
 							<label class="text-sm" for="email">Email</label>
 							<input
@@ -166,7 +172,7 @@
 					</form>
 				{/if}
 				{#if $page == 'forgot'}
-					<form class="mb-3">
+					<form class="mb-3" on:submit|preventDefault={handleForgotPasswordInitiation}>
 						<div class="mb-3">
 							<label class="text-sm" for="email">Enter Your Registered Email:</label>
 							<input

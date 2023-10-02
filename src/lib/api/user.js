@@ -9,3 +9,9 @@ export const getUserProfile = async (window) => {
   const response = await axios.get(`${process.env.BASE_URL}/api/users/profile`, { headers: commonHeaders });
   return response.data;
 }
+
+export const registerUser = async (window, data) => {
+  commonHeaders.Authorization = `Bearer ${window.localStorage.getItem('authToken')}`;
+  const response = await axios.post(`${process.env.BASE_URL}/api/users/register`, data, { headers: commonHeaders });
+  return response.data;
+}
