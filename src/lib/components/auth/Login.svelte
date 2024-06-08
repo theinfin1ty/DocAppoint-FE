@@ -4,8 +4,10 @@
 	import { createQueryStore } from '$lib/utils/queryStore.js';
 	import { loginWithEmailAndPassword } from '$lib/utils/firebase.js';
 	import { user as userStore } from '$lib/utils/store.js';
-	import { getUserProfile, registerUser } from '$lib/api/user';
+	import { getUserProfile, registerUser, initiateForgotPassword } from '$lib/api/user';
 
+	let error = false;
+	let success = null;
 	const page = createQueryStore('page');
 	const user = {
 		email: '',
@@ -30,6 +32,9 @@
 			},
 			(err) => {
 				$userStore = null;
+				error = true;
+				user.email = null;
+				user.password = null;
 				window.localStorage.setItem('authToken', null);
 				goto('/login?page=login');
 			}
@@ -37,20 +42,24 @@
 	};
 
 	const handleAccountRegistration = async () => {
-		if(user?.password !== user?.confirmPassword) {
+		if (user?.password !== user?.confirmPassword) {
 			return;
 		}
 		await registerUser(window, user);
 		await handleLoginWithEmailAndPassword();
-	}
+	};
 
-	const handleForgotPasswordInitiation = () => {
-		if(!user?.email) {
+	const handleForgotPasswordInitiation = async () => {
+		if (!user?.email) {
 			return;
 		}
+		const response = await initiateForgotPassword(window, { email: user?.email });
 
-
-	}
+		success = 'You will recieve an email with further instructions';
+		setTimeout(() => {
+			success = null;
+		}, 10000)
+	};
 </script>
 
 <div class="h-full w-full overflow-hidden">
@@ -90,6 +99,9 @@
 			</div>
 			<div>
 				{#if $page == 'login'}
+					{#if error}
+						<p class="text-sm text-red-500">Incorrect username or password</p>
+					{/if}
 					<form class="mb-3" on:submit|preventDefault={handleLoginWithEmailAndPassword}>
 						<div class="mb-3">
 							<label class="text-sm" for="email">Email</label>
@@ -115,8 +127,9 @@
 							/>
 						</div>
 						<div class="mb-3">
-							<a class="text-blue-500 underline text-sm hover:text-blue-700" href="/login?page=forgot"
-								>Forgot Password?</a
+							<a
+								class="text-blue-500 underline text-sm hover:text-blue-700"
+								href="/login?page=forgot">Forgot Password?</a
 							>
 						</div>
 						<div class="flex justify-center items-center">
@@ -172,6 +185,9 @@
 					</form>
 				{/if}
 				{#if $page == 'forgot'}
+					{#if success}
+						<p class="text-sm text-green-500">{success}</p>
+					{/if}
 					<form class="mb-3" on:submit|preventDefault={handleForgotPasswordInitiation}>
 						<div class="mb-3">
 							<label class="text-sm" for="email">Enter Your Registered Email:</label>

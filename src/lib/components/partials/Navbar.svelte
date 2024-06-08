@@ -64,7 +64,7 @@
 				<div class="hidden sm:ml-6 sm:block">
 					<div class="flex space-x-4">
 						<!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-						{#if $user?.profile?.role}
+						{#if $user?.profile?.role == 'client' || $user?.profile?.role == 'doctor'}
 							<a
 								href="/dashboard"
 								class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
