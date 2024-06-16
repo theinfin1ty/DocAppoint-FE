@@ -18,7 +18,7 @@
       } else {
         $user = null;
         window.localStorage.setItem('authToken', null)
-        goto('/login?page=login');
+        goto('/');
       }
     })
   })
