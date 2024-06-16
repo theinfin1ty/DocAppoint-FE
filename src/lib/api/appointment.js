@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { user as userStore } from  '$lib/utils/store';
 
 const commonHeaders = {
 	'Content-Type': 'application/json'

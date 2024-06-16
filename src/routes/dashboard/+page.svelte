@@ -8,16 +8,9 @@
 	import { getAllAppointments } from '$lib/api/appointment';
 	import Loader from '$lib/components/partials/Loader.svelte';
 
-	$: appointments = [];
+	$: appointments = null;
 	$: pagination = {};
 	let loading = true;
-
-	onMount(async () => {
-		if (!$user?.profile?.role) {
-			$user = null;
-			goto('/login?page=login');
-		}
-	});
 
 	const getAppointments = async () => {
 		try {
@@ -33,6 +26,15 @@
 		}
 	};
 
+	onMount(async () => {
+		if (!$user?.profile?.role) {
+			$user = null;
+			goto('/login?page=login');
+		}
+
+		await getAppointments();
+	});
+
 	const onAction = (action) => {};
 </script>
 
@@ -41,14 +43,12 @@
 	<Loader />
 {/if}
 <div>
-	{#if $user?.profile?.role == 'admin'}
-		{#await getAppointments() then _}
+	{#if appointments}
+		{#if $user?.profile?.role == 'admin'}
 			<AppointmentsTable {appointments} {onAction} {pagination} heading={'Upcoming Appointments'} />
-		{/await}
-	{:else}
-		{#await getAppointments() then _}
+		{:else}
 			<AppointmentsTable {appointments} {onAction} {pagination} heading={'Upcoming Appointments'} />
-		{/await}
+		{/if}
 	{/if}
 </div>
 <Footer />

@@ -10,7 +10,15 @@
 		"sourceMap": true,
 		"strict": true,
 		"baseUrl": "./",
-    "outDir": "./build"
+    "outDir": "./build",
+		"paths": {
+			"$lib": [
+				"src/lib"
+			],
+			"$lib/*": [
+				"src/lib/*"
+			]
+		},
 	},
 	"exclude": [
 		"./.svelte-kit/**",

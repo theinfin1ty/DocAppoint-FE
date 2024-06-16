@@ -101,7 +101,7 @@
 				/>
 			</div>
 			<div class="flex flex-row mb-4 gap-5">
-				<div class="w-1/2">
+				<div class="w-1/3">
 					<label class="text-sm font-semibold" for="date">Appointment Date:</label>
 					<input
 						class="border rounded px-3 py-2 w-full {showErrors && !appointment?.date
@@ -119,7 +119,7 @@
 						<p class="text-xs text-red-500">Appointment date is required</p>
 					{/if}
 				</div>
-				<div class="w-1/2">
+				<div class="w-1/3">
 					<label for="slot" class="text-sm font-semibold">Time Slot:</label>
 					<select
 						class="border border-gray-300 bg-white rounded px-3 py-[10px] w-full"
@@ -130,6 +130,19 @@
 					>
 						<option value="morning">Morning</option>
 						<option value="evening">Evening</option>
+					</select>
+				</div>
+				<div class="w-1/3">
+					<label for="slot" class="text-sm font-semibold">Appointment Type:</label>
+					<select
+						class="border border-gray-300 bg-white rounded px-3 py-[10px] w-full"
+						name="appointment[type]"
+						id="type"
+						required={true}
+						bind:value={appointment.type}
+					>
+						<option selected value="new">New</option>
+						<option value="follow-up">Follow-up</option>
 					</select>
 				</div>
 			</div>

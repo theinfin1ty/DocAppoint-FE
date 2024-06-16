@@ -1,47 +1,47 @@
 <script>
-  import Navbar from '$lib/components/partials/Navbar.svelte';
+	import Navbar from '$lib/components/partials/Navbar.svelte';
 	import { onMount } from 'svelte';
-  import { user } from '$lib/utils/store';
-  import { goto } from "$app/navigation";
-  import AppointmentsTable from '$lib/components/appointment/AppointmentsTable.svelte';
-  import Footer from '$lib/components/partials/Footer.svelte';
-  import { getAllAppointments } from '$lib/api/appointment';
-  import Loader from '$lib/components/partials/Loader.svelte';
+	import { user } from '$lib/utils/store';
+	import { goto } from '$app/navigation';
+	import AppointmentsTable from '$lib/components/appointment/AppointmentsTable.svelte';
+	import Footer from '$lib/components/partials/Footer.svelte';
+	import { getAllAppointments } from '$lib/api/appointment';
+	import Loader from '$lib/components/partials/Loader.svelte';
 
-  $: appointments = [];
-  $: pagination = {};
-  let loading = true;
+	$: appointments = null;
+	$: pagination = {};
+	let loading = true;
 
-  onMount(async () => {
-    if (!$user?.profile?.role) {
-      $user = null;
-      goto('/login?page=login')
-    }
-  });
+	const getAppointments = async () => {
+		try {
+			const response = await getAllAppointments(window, {});
+			appointments = response.data;
+			pagination = response.pagination;
+			console.log(response.pagination);
+			loading = false;
+		} catch (error) {
+			console.log(error);
+			loading = false;
+		}
+	};
 
-  const getAppointments = async () => {
-    try {
-      const response = await getAllAppointments(window, {})
-      appointments = response.data;
-      pagination = response.pagination;
-      loading = false;
-    } catch(error) {
-      console.log(error)
-      loading = false;
-    }
-  }
+	onMount(async () => {
+		if (!$user?.profile?.role) {
+			$user = null;
+			goto('/login?page=login');
+		}
+
+		await getAppointments();
+	});
 </script>
+
 <Navbar />
 {#if loading}
-  <Loader />
+	<Loader />
 {/if}
 <div>
-  {#await getAppointments() then _}
-  <AppointmentsTable
-    {appointments}
-    {pagination}
-    heading={'All Appointments'}
-  />
-  {/await}
+	{#if appointments}
+		<AppointmentsTable {appointments} {pagination} heading={'All Appointments'} />
+	{/if}
 </div>
 <Footer />
