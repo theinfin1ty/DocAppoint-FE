@@ -15,29 +15,54 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 export const auth = firebaseAuth.getAuth(firebaseApp);
 
-export const loginWithEmailAndPassword = async (email, password, succes, failure) => {
-  try {
-    const userRecord = await firebaseAuth.signInWithEmailAndPassword(auth, email, password);
-    const user = { ...userRecord?.user };
-    if(succes) {
-      succes(user);
-    }
-  } catch (error) {
-    if(failure) {
-      failure(error);
-    }
-  }
-}
+export const getRecaptchaVerifier = (elementId, success) => {
+	return new firebaseAuth.RecaptchaVerifier(auth, elementId, {
+		size: 'invisible',
+		callback: (response) => {
+			success();
+		}
+	});
+};
+
+export const loginWithEmailAndPassword = async (email, password, success, failure) => {
+	try {
+		const userRecord = await firebaseAuth.signInWithEmailAndPassword(auth, email, password);
+		const user = { ...userRecord?.user };
+		if (success) {
+			success(user);
+		}
+	} catch (error) {
+		if (failure) {
+			failure(error);
+		}
+	}
+};
+
+export const loginWithPhoneNumber = async (phoneNumber, appVerifier, success, failure) => {
+	try {
+		const confirmationResult = await firebaseAuth.signInWithPhoneNumber(
+			auth,
+			`+91${phoneNumber}`,
+			appVerifier
+		);
+
+    success(confirmationResult);
+	} catch (error) {
+		if (failure) {
+			failure(error);
+		}
+	}
+};
 
 export const setSessionPresist = () => {
-  return firebaseAuth.setPersistence(auth, firebaseAuth.browserSessionPersistence);
+	return firebaseAuth.setPersistence(auth, firebaseAuth.browserSessionPersistence);
 };
 
 export const setlocalPresist = () => {
-  return firebaseAuth.setPersistence(auth, firebaseAuth.browserLocalPersistence);
+	return firebaseAuth.setPersistence(auth, firebaseAuth.browserLocalPersistence);
 };
 
 export const logout = () => {
-  window.localStorage.setItem('authToken', null);
-  return firebaseAuth.signOut(auth);
-}
+	window.localStorage.setItem('authToken', null);
+	return firebaseAuth.signOut(auth);
+};

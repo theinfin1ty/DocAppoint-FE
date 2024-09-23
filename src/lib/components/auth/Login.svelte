@@ -2,219 +2,124 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { createQueryStore } from '$lib/utils/queryStore.js';
-	import { loginWithEmailAndPassword } from '$lib/utils/firebase.js';
+	import {
+		loginWithEmailAndPassword,
+		getRecaptchaVerifier,
+		loginWithPhoneNumber
+	} from '$lib/utils/firebase.js';
 	import { user as userStore } from '$lib/utils/store.js';
 	import { getUserProfile, registerUser, initiateForgotPassword } from '$lib/api/user';
+	import { initiateLogin, login } from '$lib/api/auth';
 
 	let error = false;
 	let success = null;
 	const page = createQueryStore('page');
 	const user = {
-		email: '',
-		password: '',
-		confirmPassword: ''
+		phoneNumber: '',
+		otp: ''
 	};
 
 	onMount(() => {
 		if (!$page) $page = 'login';
+
+		user.phoneNumber = '';
+		user.otp = '';
+		error = false;
+		success = null;
 	});
 
-	const handleLoginWithEmailAndPassword = async () => {
-		await loginWithEmailAndPassword(
-			user.email,
-			user.password,
-			async (res) => {
-				$userStore = res;
-				window.localStorage.setItem('authToken', $userStore?.accessToken);
-				const userProfile = await getUserProfile(window);
-				$userStore.profile = userProfile;
-				goto('/dashboard');
-			},
-			(err) => {
-				$userStore = null;
-				error = true;
-				user.email = null;
-				user.password = null;
-				window.localStorage.setItem('authToken', null);
-				goto('/login?page=login');
-			}
-		);
-	};
+	const handleInitiateLogin = async () => {
+		const response = await initiateLogin({
+			phoneNumber: user.phoneNumber
+		});
 
-	const handleAccountRegistration = async () => {
-		if (user?.password !== user?.confirmPassword) {
+		if (!response) {
+			error = true;
 			return;
 		}
-		await registerUser(window, user);
-		await handleLoginWithEmailAndPassword();
+
+		$page = 'verify';
 	};
 
-	const handleForgotPasswordInitiation = async () => {
-		if (!user?.email) {
+	const handleLogin = async () => {
+		const response = await login({
+			phoneNumber: user?.phoneNumber,
+			otp: user?.otp
+		});
+
+		if (!response) {
+			$userStore.profile = null;
+			error = true;
+			window.localStorage.setItem('authToken', null);
+			goto('/login?page=login');
 			return;
 		}
-		const response = await initiateForgotPassword(window, { email: user?.email });
 
-		success = 'You will recieve an email with further instructions';
-		setTimeout(() => {
-			success = null;
-		}, 10000)
+		window.localStorage.setItem('authToken', response?.tokens?.accessToken);
+		window.localStorage.setItem('refreshToken', response?.tokens?.refreshToken);
+		const userProfile = await getUserProfile();
+		$userStore.profile = userProfile;
+		goto('/dashboard');
 	};
 </script>
 
 <div class="h-full w-full overflow-hidden">
 	<div class="inset-0 mx-auto flex max-w-md items-center overflow-y-auto p-8">
 		<div class="form-wrapper w-full py-6">
-			<div class="tabs mb-6 mt-2 text-sm">
-				{#if $page != 'forgot'}
-					<button
-						on:click={() => {
-							$page = 'login';
-						}}
-						class="btn-tab active m-0 border-b-4 border-blue-950 px-2 py-1.5 font-medium text-blue-950 {$page !=
-						'login'
-							? 'opacity-50'
-							: ''}">Login With Existing Account</button
-					>
-					<button
-						on:click={() => {
-							$page = 'register';
-						}}
-						class="btn-tab active ml-2 border-b-4 border-blue-950 px-2 py-1.5 font-medium text-blue-950 {$page !=
-						'register'
-							? 'opacity-50'
-							: ''}">Register New Account</button
-					>
-				{:else}
-					<button
-						on:click={() => {
-							$page = 'forgot';
-						}}
-						class="btn-tab w-full active border-b-4 border-blue-950 px-2 py-1.5 font-medium text-blue-950 {$page !=
-						'forgot'
-							? 'opacity-50'
-							: ''}">Forgot Password ?</button
-					>
-				{/if}
-			</div>
 			<div>
 				{#if $page == 'login'}
 					{#if error}
-						<p class="text-sm text-red-500">Incorrect username or password</p>
+						<p class="text-sm text-red-500">Something went wrong</p>
 					{/if}
-					<form class="mb-3" on:submit|preventDefault={handleLoginWithEmailAndPassword}>
+					<form class="mb-3" on:submit|preventDefault={handleInitiateLogin}>
 						<div class="mb-3">
-							<label class="text-sm" for="email">Email</label>
+							<label class="text-sm" for="phoneNumber">Phone Number</label>
 							<input
 								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
-								type="email"
-								id="email"
-								name="email"
-								placeholder="you@example.com"
-								bind:value={user.email}
+								type="phone"
+								id="phoneNumber"
+								name="phoneNumber"
+								placeholder="1234567890"
+								bind:value={user.phoneNumber}
 								required
 							/>
-						</div>
-						<div class="mb-3">
-							<label class="text-sm" for="password">Password</label>
-							<input
-								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
-								type="password"
-								id="password"
-								name="password"
-								bind:value={user.password}
-								required
-							/>
-						</div>
-						<div class="mb-3">
-							<a
-								class="text-blue-500 underline text-sm hover:text-blue-700"
-								href="/login?page=forgot">Forgot Password?</a
-							>
 						</div>
 						<div class="flex justify-center items-center">
 							<button
+								id="login-submit"
 								class="border rounded-lg p-3 w-full bg-blue-500 text-white hover:bg-blue-700"
-								type="submit">Login</button
+								type="submit">Proceed</button
 							>
 						</div>
 					</form>
 				{/if}
-				{#if $page == 'register'}
-					<form class="mb-3" on:submit|preventDefault={handleAccountRegistration}>
-						<div class="mb-3">
-							<label class="text-sm" for="email">Email</label>
-							<input
-								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
-								type="email"
-								id="email"
-								name="email"
-								placeholder="you@example.com"
-								required
-								bind:value={user.email}
-							/>
-						</div>
-						<div class="mb-3">
-							<label class="text-sm" for="password">Password</label>
-							<input
-								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
-								type="password"
-								id="password"
-								name="password"
-								required
-								bind:value={user.password}
-							/>
-						</div>
-						<div class="mb-3">
-							<label class="text-sm" for="password">Confirm Password</label>
-							<input
-								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
-								type="password"
-								id="confirm-password"
-								name="confirm-password"
-								required
-								bind:value={user.confirmPassword}
-							/>
-						</div>
-						<div class="flex justify-center items-center">
-							<button
-								class="border rounded-lg p-3 w-full bg-blue-500 text-white hover:bg-blue-700"
-								type="submit">Register</button
-							>
-						</div>
-					</form>
-				{/if}
-				{#if $page == 'forgot'}
-					{#if success}
-						<p class="text-sm text-green-500">{success}</p>
+				{#if $page == 'verify'}
+					{#if error}
+						<p class="text-sm text-red-500">Something went wrong</p>
 					{/if}
-					<form class="mb-3" on:submit|preventDefault={handleForgotPasswordInitiation}>
+					<form class="mb-3" on:submit|preventDefault={handleLogin}>
 						<div class="mb-3">
-							<label class="text-sm" for="email">Enter Your Registered Email:</label>
+							<label class="text-sm" for="phoneNumber">Enter OTP</label>
 							<input
 								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
-								type="email"
-								id="email"
-								name="email"
-								placeholder="you@example.com"
+								type="text"
+								id="otp"
+								name="otp"
+								placeholder="XXXXXX"
+								bind:value={user.otp}
 								required
-								bind:value={user.email}
 							/>
 						</div>
 						<div class="flex justify-center items-center">
 							<button
+								id="login-submit"
 								class="border rounded-lg p-3 w-full bg-blue-500 text-white hover:bg-blue-700"
-								type="submit">Submit</button
+								type="submit">Proceed</button
 							>
 						</div>
 					</form>
 				{/if}
 			</div>
-			<!-- <div class="col-6 offset-3">
-        <div class="mb-3">
-            <a class="btn btn-danger" href="/google">Sign In with Google</a>
-        </div>
-      </div> -->
 		</div>
 	</div>
 </div>

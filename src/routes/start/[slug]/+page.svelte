@@ -10,7 +10,7 @@
 
   onMount(() => {
     if (!$user?.profile?.role === 'doctor') {
-      $user = null;
+      $user.profile = null;
       goto('/login?page=login')
     }
   });

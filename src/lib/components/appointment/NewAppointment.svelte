@@ -43,7 +43,6 @@
 			appointment = await getAppointment(window, appointmentId);
 			loading = false;
 		} catch (error) {
-			console.log(error);
 			loading = false;
 		}
 	};

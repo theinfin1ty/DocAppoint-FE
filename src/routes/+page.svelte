@@ -5,7 +5,7 @@
 </script>
 
 <Navbar />
-<header class="bg-green-500 text-white p-4">
+<!-- <header class="bg-green-500 text-white p-4">
 	<h1 class="text-2xl text-center">Myomasafecure</h1>
 </header>
 
@@ -47,5 +47,5 @@
   <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
     <a href="/login">Book an appointment now</a>
   </button>
-</div>
+</div> -->
 <Footer />

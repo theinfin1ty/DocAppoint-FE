@@ -56,7 +56,7 @@
 			<div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
 				<div class="flex flex-shrink-0 items-center">
 					<a
-						href={$user ? "/dashboard" : "/"}
+						href={$user?.profile ? "/dashboard" : "/"}
 						class="text-gray-300 hover:text-white rounded-md px-3 py-2 text-base font-medium"
 						>DocAppoint</a
 					>
@@ -107,8 +107,9 @@
 						<a
 							on:click={async () => {
 								await logout();
-								$user = null;
+								$user.profile = null;
 								window.localStorage.setItem('authToken', null);
+								window.localStorage.setItem('refreshToken', null);
 								goto('/login?page=login');
 							}}
 							on:keydown={() => {}}

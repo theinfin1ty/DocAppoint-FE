@@ -17,17 +17,15 @@
 			const response = await getAllAppointments(window, {});
 			appointments = response.data;
 			pagination = response.pagination;
-			console.log(response.pagination);
 			loading = false;
 		} catch (error) {
-			console.log(error);
 			loading = false;
 		}
 	};
 
 	onMount(async () => {
 		if (!$user?.profile?.role) {
-			$user = null;
+			$user.profile = null;
 			goto('/login?page=login');
 		}
 

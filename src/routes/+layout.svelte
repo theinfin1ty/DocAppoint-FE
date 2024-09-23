@@ -1,26 +1,27 @@
 <script>
-  import "../app.css";
-  import { onAuthStateChanged } from 'firebase/auth';
-  import { auth } from '$lib/utils/firebase';
+	import '../app.css';
+	import { onAuthStateChanged } from 'firebase/auth';
+	import { auth } from '$lib/utils/firebase';
 	import { onMount } from 'svelte';
-  import { user } from '$lib/utils/store';
-  import { getUserProfile } from '$lib/api/user';
-  import { goto } from "$app/navigation";
+	import { user } from '$lib/utils/store';
+	import { getUserProfile } from '$lib/api/user';
+	import { goto } from '$app/navigation';
 
-  onMount(() => {
-    onAuthStateChanged(auth, async (fireUser) => {
-      if(fireUser) {
-        $user = fireUser;
-        window.localStorage.setItem('authToken', $user?.accessToken)
-        const userProfile = await getUserProfile(window);
-				$user.profile = userProfile;
-				goto('/dashboard');
-      } else {
-        $user = null;
-        window.localStorage.setItem('authToken', null)
-        goto('/');
-      }
-    })
-  })
+	onMount(async () => {
+		const accessToken = window.localStorage.getItem('authToken');
+		const refreshToken = window.localStorage.getItem('refreshToken');
+
+		if (accessToken || refreshToken) {
+			const userProfile = await getUserProfile();
+
+			$user.profile = userProfile;
+			goto('/dashboard');
+		} else {
+			$user.profile = null;
+			window.localStorage.setItem('authToken', null);
+			goto('/login?page=login');
+		}
+	});
 </script>
+
 <slot />

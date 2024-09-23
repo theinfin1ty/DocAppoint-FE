@@ -11,7 +11,7 @@
 
   onMount(() => {
     if (!$user?.profile?.role) {
-      $user = null;
+      $user.profile = null;
       goto('/login?page=login')
     }
   });

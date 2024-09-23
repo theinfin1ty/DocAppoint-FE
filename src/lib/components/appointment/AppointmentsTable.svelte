@@ -24,7 +24,6 @@
 			start = page - 1 + 1;
 			end = page - 1 + count;
 		}
-		console.log(start, end);
 	});
 </script>
 
