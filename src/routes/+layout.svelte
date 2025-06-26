@@ -6,6 +6,8 @@
 	import { user } from '$lib/utils/store';
 	import { getUserProfile } from '$lib/api/user';
 	import { goto } from '$app/navigation';
+	import Toast from '$lib/components/ui/Toast.svelte';
+	import { toastStore } from '$lib/utils/toast';
 
 	onMount(async () => {
 		const accessToken = window.localStorage.getItem('authToken');
@@ -25,3 +27,4 @@
 </script>
 
 <slot />
+<Toast bind:show={$toastStore.show} message={$toastStore.message} type={$toastStore.type} duration={$toastStore.duration} />

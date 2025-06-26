@@ -2,7 +2,7 @@
 	import { getAppointment, updateAppointment } from '$lib/api/appointment';
 	import Loader from '$lib/components/partials/Loader.svelte';
 	import { onMount } from 'svelte';
-	import * as moment from 'moment-timezone';
+	import moment from 'moment-timezone';
 	import { goto } from '$app/navigation';
 	import { user } from '$lib/utils/store';
 

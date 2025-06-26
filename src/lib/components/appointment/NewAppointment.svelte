@@ -1,38 +1,58 @@
 <script>
-	import * as moment from 'moment-timezone';
+	import moment from 'moment-timezone';
 	import { createAppointment, getAppointment, updateAppointment } from '$lib/api/appointment';
+	import { getAvailableSlots } from '$lib/api/slots';
 	import { goto } from '$app/navigation';
 	import Loader from '$lib/components/partials/Loader.svelte';
 	import { onMount } from 'svelte';
+	import { showToast } from '$lib/utils/toast';
 
 	export let appointmentId;
 	let appointment = {};
 	let showErrors = false;
 	let loading = false;
+	let availableSlots = [];
+	let loadingSlots = false;
 
 	onMount(async () => {
 		if (appointmentId) {
 			await fetchAppointment();
 		}
 
-		if (appointment?.date) appointment.date = moment(appointment.date).format('YYYY-MM-DD');
+		if (appointment?.date) {
+			appointment.date = moment(appointment.date).format('YYYY-MM-DD');
+			await loadAvailableSlots();
+		}
 	});
 
 	const handleAppointmentSubmit = async () => {
 		try {
-			const { name, age, date, purpose } = appointment;
-			if (!name || !age || !date || !purpose) {
+			const { name, age, date, purpose, slot } = appointment;
+			if (!name || !age || !date || !purpose || !slot) {
 				showErrors = true;
 				return;
 			}
 			loading = true;
+			let response;
 			if (appointment?._id) {
-				await updateAppointment(window, appointment?._id, appointment);
+				response = await updateAppointment(window, appointment?._id, appointment);
+				if (response) {
+					showToast('Appointment updated successfully', 'success');
+				} else {
+					showToast('Failed to update appointment', 'error');
+				}
 			} else {
-				await createAppointment(window, appointment);
+				response = await createAppointment(window, appointment);
+				if (response) {
+					showToast('Appointment booked successfully', 'success');
+				} else {
+					showToast('Failed to book appointment', 'error');
+				}
 			}
 			loading = false;
-			goto('/dashboard');
+			if (response) {
+				goto('/dashboard');
+			}
 		} catch (error) {
 			loading = false;
 		}
@@ -45,6 +65,21 @@
 		} catch (error) {
 			loading = false;
 		}
+	};
+
+	const loadAvailableSlots = async () => {
+		if (!appointment.date) return;
+		loadingSlots = true;
+		const response = await getAvailableSlots(appointment.date);
+		if (response) {
+			availableSlots = response.slots || [];
+		}
+		loadingSlots = false;
+	};
+
+	const handleDateChange = async () => {
+		appointment.slot = '';
+		await loadAvailableSlots();
 	};
 </script>
 
@@ -110,9 +145,10 @@
 						id="date"
 						name="appointment[date]"
 						min={moment().format('YYYY-MM-DD')}
-						max={moment().add(10, 'days').format('YYYY-MM-DD')}
+						max={moment().add(30, 'days').format('YYYY-MM-DD')}
 						required={true}
 						bind:value={appointment.date}
+						on:change={handleDateChange}
 					/>
 					{#if showErrors && !appointment?.date}
 						<p class="text-xs text-red-500">Appointment date is required</p>
@@ -120,16 +156,25 @@
 				</div>
 				<div class="w-1/3">
 					<label for="slot" class="text-sm font-semibold">Time Slot:</label>
-					<select
-						class="border border-gray-300 bg-white rounded px-3 py-[10px] w-full"
-						name="appointment[slot]"
-						id="slot"
-						required={true}
-						bind:value={appointment.slot}
-					>
-						<option value="morning">Morning</option>
-						<option value="evening">Evening</option>
-					</select>
+					{#if loadingSlots}
+						<div class="border border-gray-300 rounded px-3 py-2 text-gray-500">Loading slots...</div>
+					{:else}
+						<select
+							class="border border-gray-300 bg-white rounded px-3 py-[10px] w-full {showErrors && !appointment?.slot ? 'border-red-300' : ''}"
+							name="appointment[slot]"
+							id="slot"
+							required={true}
+							bind:value={appointment.slot}
+						>
+							<option value="">Select a time slot</option>
+							{#each availableSlots as slot}
+								<option value={slot}>{slot}</option>
+							{/each}
+						</select>
+					{/if}
+					{#if showErrors && !appointment?.slot}
+						<p class="text-xs text-red-500">Time slot is required</p>
+					{/if}
 				</div>
 				<div class="w-1/3">
 					<label for="slot" class="text-sm font-semibold">Appointment Type:</label>

@@ -14,6 +14,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 export const auth = firebaseAuth.getAuth(firebaseApp);
+export const googleProvider = new firebaseAuth.GoogleAuthProvider();
 
 export const getRecaptchaVerifier = (elementId, success) => {
 	return new firebaseAuth.RecaptchaVerifier(auth, elementId, {
@@ -60,6 +61,20 @@ export const setSessionPresist = () => {
 
 export const setlocalPresist = () => {
 	return firebaseAuth.setPersistence(auth, firebaseAuth.browserLocalPersistence);
+};
+
+export const loginWithGoogle = async (success, failure) => {
+	try {
+		const result = await firebaseAuth.signInWithPopup(auth, googleProvider);
+		const user = { ...result.user };
+		if (success) {
+			success(user);
+		}
+	} catch (error) {
+		if (failure) {
+			failure(error);
+		}
+	}
 };
 
 export const logout = () => {

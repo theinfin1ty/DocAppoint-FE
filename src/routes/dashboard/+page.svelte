@@ -5,8 +5,9 @@
 	import { goto } from '$app/navigation';
 	import AppointmentsTable from '$lib/components/appointment/AppointmentsTable.svelte';
 	import Footer from '$lib/components/partials/Footer.svelte';
-	import { getAllAppointments } from '$lib/api/appointment';
+	import { getAllAppointments, updateAppointment } from '$lib/api/appointment';
 	import Loader from '$lib/components/partials/Loader.svelte';
+	import { showToast } from '$lib/utils/toast';
 
 	$: appointments = null;
 	$: pagination = {};
@@ -34,7 +35,25 @@
 		await getAppointments();
 	});
 
-	const onAction = (action) => {};
+	const onAction = async (action, appointment) => {
+		if (action === 'complete') {
+			const response = await updateAppointment(window, appointment._id, { status: 'completed' });
+			if (response) {
+				showToast('Appointment marked as completed', 'success');
+				await getAppointments();
+			} else {
+				showToast('Failed to complete appointment', 'error');
+			}
+		} else if (action === 'cancel') {
+			const response = await updateAppointment(window, appointment._id, { status: 'cancelled' });
+			if (response) {
+				showToast('Appointment cancelled successfully', 'success');
+				await getAppointments();
+			} else {
+				showToast('Failed to cancel appointment', 'error');
+			}
+		}
+	};
 </script>
 
 <Navbar />
@@ -43,11 +62,7 @@
 {/if}
 <div>
 	{#if appointments}
-		{#if $user?.profile?.role == 'admin'}
-			<AppointmentsTable {appointments} {onAction} {pagination} heading={'Upcoming Appointments'} />
-		{:else}
-			<AppointmentsTable {appointments} {onAction} {pagination} heading={'Upcoming Appointments'} />
-		{/if}
+		<AppointmentsTable {appointments} {onAction} {pagination} heading={'Upcoming Appointments'} role={$user?.profile?.role} />
 	{/if}
 </div>
 <Footer />

@@ -1,11 +1,13 @@
 <script>
 	import { onMount } from 'svelte';
-	import * as moment from 'moment-timezone';
+	import moment from 'moment-timezone';
 
 	export let pagination = { total: 0, count: 0, page: 1 };
 	export let heading = '';
 	export let appointments;
 	export let caption = '';
+	export let role = 'client';
+	export let onAction = () => {};
 
 	$: total = 0;
 	$: count = 0;
@@ -266,11 +268,35 @@
 							<td class="px-6 py-4 capitalize">{moment(appointment?.date).format('LL')}</td>
 							<td class="px-6 py-4 capitalize">{appointment?.slot}</td>
 							<td class="px-6 py-4 capitalize">{appointment?.status}</td>
-							<td class="px-6 py-4 capitalize">
-								<a
-									href={`/view/${appointment?._id}`}
-									class="font-medium text-blue-600 hover:underline">View</a
-								>
+							<td class="px-6 py-4">
+								<div class="flex gap-2">
+									<a
+										href={`/view/${appointment?._id}`}
+										class="text-blue-600 hover:underline text-sm">View</a
+									>
+									{#if role === 'doctor' && (appointment?.status === 'confirmed' || appointment?.status === 'pending')}
+										<button
+											on:click={() => onAction('complete', appointment)}
+											class="text-green-600 hover:underline text-sm font-medium"
+										>
+											Complete
+										</button>
+									{/if}
+									{#if role === 'client' && (appointment?.status === 'confirmed' || appointment?.status === 'pending')}
+										<button
+											on:click={() => onAction('cancel', appointment)}
+											class="text-red-600 hover:underline text-sm font-medium"
+										>
+											Cancel
+										</button>
+										<a
+											href={`/new?appointmentId=${appointment._id}`}
+											class="text-blue-600 hover:underline text-sm font-medium"
+										>
+											Edit
+										</a>
+									{/if}
+								</div>
 							</td>
 						</tr>
 					{/each}
