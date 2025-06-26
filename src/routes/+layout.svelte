@@ -21,7 +21,7 @@
 		} else {
 			$user.profile = null;
 			window.localStorage.setItem('authToken', null);
-			goto('/login?page=login');
+			goto('/');
 		}
 	});
 </script>
