@@ -58,7 +58,7 @@
 					<a
 						href={$user?.profile ? "/dashboard" : "/"}
 						class="text-gray-300 hover:text-white rounded-md px-3 py-2 text-base font-medium"
-						>DocAppoint</a
+						>Mayomasafecure</a
 					>
 				</div>
 				<div class="hidden sm:ml-6 sm:block">

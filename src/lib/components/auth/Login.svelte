@@ -94,7 +94,7 @@
 <div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
 	<div class="max-w-md w-full space-y-8">
 		<div class="text-center">
-			<h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome to DocAppoint</h2>
+			<h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Myomasafecure</h2>
 			<p class="text-gray-600">Sign in to your account to continue</p>
 		</div>
 		<div class="bg-white rounded-lg shadow-md p-8">

@@ -15,13 +15,11 @@
 
 		if (accessToken || refreshToken) {
 			const userProfile = await getUserProfile();
-
 			$user.profile = userProfile;
-			goto('/dashboard');
 		} else {
 			$user.profile = null;
-			window.localStorage.setItem('authToken', null);
-			goto('/');
+			window.localStorage.removeItem('authToken');
+			window.localStorage.removeItem('refreshToken');
 		}
 	});
 </script>
