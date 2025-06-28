@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const baseURL = process.env.BASE_URL;
+
 export const axiosInstance = axios.create({
-	baseURL: `${process.env.BASE_URL}`,
+	baseURL: `${baseURL}`,
 	headers: {
 		'Content-Type': 'application/json'
 	}
@@ -31,7 +33,7 @@ axiosInstance.interceptors.response.use(
 			try {
 				const refreshToken = localStorage.getItem('refreshToken'); // Retrieve the stored refresh token.
 				// Make a request to your auth server to refresh the token.
-				const response = await axios.post(`${process.env.BASE_URL}/api/auth/refresh`, {
+				const response = await axios.post(`${baseURL}/api/auth/refresh`, {
 					refreshToken
 				});
 				const { tokens } = response.data;

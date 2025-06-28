@@ -92,12 +92,12 @@
 						{/if}
 						{#if $user?.profile?.role == 'admin'}
 							<a
-								href="#"
+								href="/users"
 								class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
 								>All Users</a
 							>
 							<a
-								href="#"
+								href="/users/new"
 								class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
 								>Add User</a
 							>
@@ -133,49 +133,6 @@
 					{/if}
 				</div>
 			</div>
-		</div>
-	</div>
-
-	<!-- Mobile menu, show/hide based on menu state. -->
-	<div class="sm:hidden" id="mobile-menu">
-		<div class="space-y-1 px-2 pb-3 pt-2">
-			<!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-			{#if $user?.profile?.role == 'client'}
-				<a
-					href="#"
-					class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-					>All Appointments</a
-				>
-				<a
-					href="#"
-					class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-					>New Appointment</a
-				>
-			{/if}
-			{#if $user?.profile?.role == 'doctor'}
-				<a
-					href="#"
-					class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-					>Today's Appointments</a
-				>
-				<a
-					href="#"
-					class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-					>All Appointments</a
-				>
-			{/if}
-			{#if $user?.profile?.role == 'admin'}
-				<a
-					href="#"
-					class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-					>All Users</a
-				>
-				<a
-					href="#"
-					class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-					>Add User</a
-				>
-			{/if}
 		</div>
 	</div>
 </nav>

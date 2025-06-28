@@ -5,9 +5,11 @@ const commonHeaders = {
 	'Content-Type': 'application/json'
 };
 
+const baseURL = process.env.BASE_URL;
+
 export const createAppointment = async (window, data) => {
 	commonHeaders.Authorization = `Bearer ${window.localStorage.getItem('authToken')}`;
-	const response = await axios.post(`${process.env.BASE_URL}/api/appointments`, data, {
+	const response = await axios.post(`${baseURL}/api/appointments`, data, {
 		headers: commonHeaders
 	});
 	return response.data;
@@ -15,7 +17,7 @@ export const createAppointment = async (window, data) => {
 
 export const getAllAppointments = async (window, data) => {
 	commonHeaders.Authorization = `Bearer ${window.localStorage.getItem('authToken')}`;
-	const response = await axios.get(`${process.env.BASE_URL}/api/appointments`, {
+	const response = await axios.get(`${baseURL}/api/appointments`, {
 		headers: commonHeaders,
 		params: { ...data }
 	});
@@ -24,7 +26,7 @@ export const getAllAppointments = async (window, data) => {
 
 export const getAppointment = async (window, id) => {
 	commonHeaders.Authorization = `Bearer ${window.localStorage.getItem('authToken')}`;
-	const response = await axios.get(`${process.env.BASE_URL}/api/appointments/${id}`, {
+	const response = await axios.get(`${baseURL}/api/appointments/${id}`, {
 		headers: commonHeaders,
 	});
   return response.data;
@@ -32,7 +34,7 @@ export const getAppointment = async (window, id) => {
 
 export const updateAppointment = async (window, id, data) => {
 	commonHeaders.Authorization = `Bearer ${window.localStorage.getItem('authToken')}`;
-	const response = await axios.patch(`${process.env.BASE_URL}/api/appointments/${id}`, data, {
+	const response = await axios.patch(`${baseURL}/api/appointments/${id}`, data, {
 		headers: commonHeaders
 	});
 	return response.data;

@@ -11,13 +11,30 @@
 	import { user as userStore } from '$lib/utils/store.js';
 	import { getUserProfile } from '$lib/api/user';
 	import { initiateLogin, login } from '$lib/api/auth';
+	import Captcha from './Captcha.svelte';
 
 	let error = false;
 	let success = null;
+	let captchaToken = null;
+	let captchaComponent;
 	const page = createQueryStore('page');
 	const user = {
 		phoneNumber: '',
 		otp: ''
+	};
+
+	const handleCaptchaVerified = (event) => {
+		captchaToken = event.detail.token;
+		error = false;
+	};
+
+	const handleCaptchaExpired = () => {
+		captchaToken = null;
+	};
+
+	const handleCaptchaError = () => {
+		captchaToken = null;
+		error = 'Captcha verification failed. Please try again.';
 	};
 
 	onMount(() => {
@@ -27,15 +44,18 @@
 		user.otp = '';
 		error = false;
 		success = null;
+		captchaToken = null;
 	});
 
 	const handleInitiateLogin = async () => {
 		const response = await initiateLogin({
-			phoneNumber: user.phoneNumber
+			phoneNumber: user.phoneNumber,
+			captchaToken
 		});
 
 		if (!response) {
-			error = true;
+			error = 'Failed to send OTP. Please try again.';
+			captchaComponent?.reset();
 			return;
 		}
 
@@ -101,7 +121,7 @@
 			<div>
 				{#if $page == 'login'}
 					{#if error}
-						<p class="text-sm text-red-500">Something went wrong</p>
+						<p class="text-sm text-red-500 mb-3">{typeof error === 'string' ? error : 'Something went wrong'}</p>
 					{/if}
 					<form class="mb-3" on:submit|preventDefault={handleInitiateLogin}>
 						<div class="mb-3">
@@ -116,6 +136,10 @@
 								required
 							/>
 						</div>
+						<Captcha 
+							bind:this={captchaComponent}
+							on:verified={handleCaptchaVerified}
+						/>
 						<div class="flex justify-center items-center">
 							<button
 								id="login-submit"
@@ -160,6 +184,7 @@
 								required
 							/>
 						</div>
+						<div class="mb-3"><button class="underline text-sm cursor-pointer text-blue-500" on:click={handleInitiateLogin}>Resend OTP</button></div>
 						<div class="flex justify-center items-center">
 							<button
 								id="login-submit"
