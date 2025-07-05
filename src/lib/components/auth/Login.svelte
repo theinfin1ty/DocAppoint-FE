@@ -50,6 +50,7 @@
 	const handleInitiateLogin = async () => {
 		const response = await initiateLogin({
 			phoneNumber: user.phoneNumber,
+			email: user.email,
 			captchaToken
 		});
 
@@ -65,6 +66,7 @@
 	const handleLogin = async () => {
 		const response = await login({
 			phoneNumber: user?.phoneNumber,
+			email: user?.email,
 			otp: user?.otp
 		});
 
@@ -125,14 +127,14 @@
 					{/if}
 					<form class="mb-3" on:submit|preventDefault={handleInitiateLogin}>
 						<div class="mb-3">
-							<label class="text-sm" for="phoneNumber">Phone Number</label>
+							<label class="text-sm" for="email">Email</label>
 							<input
 								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
-								type="phone"
-								id="phoneNumber"
-								name="phoneNumber"
-								placeholder="1234567890"
-								bind:value={user.phoneNumber}
+								type="email"
+								id="email"
+								name="email"
+								placeholder="abc@email.com"
+								bind:value={user.email}
 								required
 							/>
 						</div>
