@@ -86,11 +86,11 @@
 {#if loading}
 	<Loader />
 {/if}
-<div class="flex flex-col justify-center items-center mt-10">
-	<h1 class="text-center text-2xl font-bold mb-6">
+<div class="flex flex-col justify-center items-center mt-6 sm:mt-10 px-4">
+	<h1 class="text-center text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
 		{appointment?._id ? 'Update' : 'New'} Appointment
 	</h1>
-	<div class="w-6/12 mx-auto">
+	<div class="w-full max-w-2xl mx-auto">
 		<form on:submit|preventDefault={handleAppointmentSubmit} novalidate>
 			<div class="mb-4">
 				<label class="text-sm font-semibold" for="name">Patient Name:</label>
@@ -134,8 +134,8 @@
 					bind:value={appointment.weight}
 				/>
 			</div>
-			<div class="flex flex-row mb-4 gap-5">
-				<div class="w-1/3">
+			<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+				<div>
 					<label class="text-sm font-semibold" for="date">Appointment Date:</label>
 					<input
 						class="border rounded px-3 py-2 w-full {showErrors && !appointment?.date
@@ -154,7 +154,7 @@
 						<p class="text-xs text-red-500">Appointment date is required</p>
 					{/if}
 				</div>
-				<div class="w-1/3">
+				<div>
 					<label for="slot" class="text-sm font-semibold">Time Slot:</label>
 					{#if loadingSlots}
 						<div class="border border-gray-300 rounded px-3 py-2 text-gray-500">Loading slots...</div>
@@ -176,8 +176,8 @@
 						<p class="text-xs text-red-500">Time slot is required</p>
 					{/if}
 				</div>
-				<div class="w-1/3">
-					<label for="slot" class="text-sm font-semibold">Appointment Type:</label>
+				<div>
+					<label for="type" class="text-sm font-semibold">Appointment Type:</label>
 					<select
 						class="border border-gray-300 bg-white rounded px-3 py-[10px] w-full"
 						name="appointment[type]"
@@ -207,9 +207,9 @@
 					<p class="text-xs text-red-500">Purpose of visit is required</p>
 				{/if}
 			</div>
-			<div class="mb-4 mt-10 flex justify-center">
+			<div class="mb-4 mt-6 sm:mt-10 flex justify-center">
 				<button
-					class="bg-blue-900 w-1/2 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded"
+					class="bg-blue-900 w-full sm:w-1/2 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded"
 					type="submit">{appointment?._id ? 'Update' : 'Make'} Appointment</button
 				>
 			</div>

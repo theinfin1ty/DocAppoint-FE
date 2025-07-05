@@ -2,6 +2,12 @@
 	import { user } from '$lib/utils/store';
 	import { goto } from '$app/navigation';
 	import { logout } from '$lib/utils/firebase';
+
+	let mobileMenuOpen = false;
+
+	const toggleMobileMenu = () => {
+		mobileMenuOpen = !mobileMenuOpen;
+	};
 </script>
 
 <nav class="bg-gray-800">
@@ -13,17 +19,13 @@
 					type="button"
 					class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
 					aria-controls="mobile-menu"
-					aria-expanded="false"
+					aria-expanded={mobileMenuOpen}
+					on:click={toggleMobileMenu}
 				>
 					<span class="absolute -inset-0.5" />
 					<span class="sr-only">Open main menu</span>
-					<!--
-            Icon when menu is closed.
-
-            Menu open: "hidden", Menu closed: "block"
-          -->
 					<svg
-						class="block h-6 w-6"
+						class="{mobileMenuOpen ? 'hidden' : 'block'} h-6 w-6"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
@@ -36,13 +38,8 @@
 							d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
 						/>
 					</svg>
-					<!--
-            Icon when menu is open.
-
-            Menu open: "block", Menu closed: "hidden"
-          -->
 					<svg
-						class="hidden h-6 w-6"
+						class="{mobileMenuOpen ? 'block' : 'hidden'} h-6 w-6"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
@@ -133,6 +130,77 @@
 					{/if}
 				</div>
 			</div>
+		</div>
+	</div>
+
+	<!-- Mobile menu -->
+	<div class="sm:hidden {mobileMenuOpen ? 'block' : 'hidden'}" id="mobile-menu">
+		<div class="space-y-1 px-2 pb-3 pt-2">
+			{#if $user?.profile?.role == 'client' || $user?.profile?.role == 'doctor'}
+				<a
+					href="/dashboard"
+					class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+					on:click={() => mobileMenuOpen = false}
+					>Upcoming Appointments</a
+				>
+				<a
+					href="/all"
+					class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+					on:click={() => mobileMenuOpen = false}
+					>All Appointments</a
+				>
+			{/if}
+			{#if $user?.profile?.role == 'doctor'}
+				<a
+					href="/slots"
+					class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+					on:click={() => mobileMenuOpen = false}
+					>Manage Slots</a
+				>
+			{/if}
+			{#if $user?.profile?.role == 'client'}
+				<a
+					href="/new"
+					class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+					on:click={() => mobileMenuOpen = false}
+					>New Appointment</a
+				>
+			{/if}
+			{#if $user?.profile?.role == 'admin'}
+				<a
+					href="/users"
+					class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+					on:click={() => mobileMenuOpen = false}
+					>All Users</a
+				>
+				<a
+					href="/users/new"
+					class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+					on:click={() => mobileMenuOpen = false}
+					>Add User</a
+				>
+			{/if}
+			{#if $user?.profile?.role}
+				<button
+					on:click={async () => {
+						mobileMenuOpen = false;
+						await logout();
+						$user.profile = null;
+						window.localStorage.setItem('authToken', null);
+						window.localStorage.setItem('refreshToken', null);
+						goto('/login?page=login');
+					}}
+					class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium w-full text-left"
+					>Logout</button
+				>
+			{:else}
+				<a
+					href="/login?page=login"
+					class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+					on:click={() => mobileMenuOpen = false}
+					>Login / Register</a
+				>
+			{/if}
 		</div>
 	</div>
 </nav>

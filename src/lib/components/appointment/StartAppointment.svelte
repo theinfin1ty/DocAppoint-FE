@@ -38,58 +38,64 @@
 {#if loading}
 	<Loader />
 {/if}
-<div class="flex flex-col items-center space-y-3 mt-10 mx-4">
-	<h1 class="text-center text-2xl mb-3 font-bold">Appointment Details</h1>
-	<div class="w-full sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-1/3">
-		<div class="mb-3">
-			Patient's Name: <strong class="capitalize">{appointment.name}</strong>
+<div class="flex flex-col items-center space-y-4 mt-6 sm:mt-10 mx-4 pb-8">
+	<h1 class="text-center text-xl sm:text-2xl mb-4 font-bold">Start Appointment</h1>
+	<div class="w-full max-w-2xl bg-white rounded-lg shadow-md p-6">
+		<div class="space-y-4">
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+				<div class="bg-gray-50 p-3 rounded-lg">
+					<span class="text-sm text-gray-600">Patient's Name</span>
+					<p class="font-semibold capitalize">{appointment.name}</p>
+				</div>
+				<div class="bg-gray-50 p-3 rounded-lg">
+					<span class="text-sm text-gray-600">Age</span>
+					<p class="font-semibold">{appointment.age} years</p>
+				</div>
+				<div class="bg-gray-50 p-3 rounded-lg">
+					<span class="text-sm text-gray-600">Weight</span>
+					<p class="font-semibold">{appointment.weight} Kgs</p>
+				</div>
+				<div class="bg-gray-50 p-3 rounded-lg">
+					<span class="text-sm text-gray-600">Date</span>
+					<p class="font-semibold">{moment(appointment.date).format('LL')}</p>
+				</div>
+				<div class="bg-gray-50 p-3 rounded-lg">
+					<span class="text-sm text-gray-600">Time Slot</span>
+					<p class="font-semibold capitalize">{appointment.slot}</p>
+				</div>
+				<div class="bg-gray-50 p-3 rounded-lg">
+					<span class="text-sm text-gray-600">Status</span>
+					<p class="font-semibold text-red-500 capitalize">{appointment.status}</p>
+				</div>
+			</div>
+			<div class="bg-gray-50 p-3 rounded-lg">
+				<span class="text-sm text-gray-600">Purpose of visit</span>
+				<p class="font-semibold">{appointment.purpose}</p>
+			</div>
 		</div>
-		<div class="mb-3">
-			Age (in years): <strong>{appointment.age}</strong>
+		<div class="mt-4">
+			<label for="remarks" class="block text-sm font-medium text-gray-700 mb-2">Remarks / Prescription:</label>
+			<textarea
+				class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+				name="remarks"
+				id="remarks"
+				rows="4"
+				placeholder="Enter your remarks or prescription here..."
+				bind:value={appointment.remark}
+				required
+			/>
 		</div>
-		<div class="mb-3">
-			Weight (in Kgs): <strong>{appointment.weight}</strong>
-		</div>
-		<div class="mb-3">
-			Appointment Date: <strong>{moment(appointment.date).format('LL')}</strong>
-		</div>
-		<div class="mb-3">
-			Time Slot: <strong class="capitalize">{appointment.slot}</strong>
-		</div>
-    <div class="mb-3">
-			Appointment Status: <strong class="text-red-500 capitalize">{appointment.status}</strong>
-		</div>
-		<div class="mb-3">
-			Purpose of visit: <strong>{appointment.purpose}</strong>
-		</div>
-		<div class="mb-3">
-      <label for="purpose" class="">Remarks:</label>
-      <textarea
-        class="border rounded px-3 py-2 w-full border-gray-300"
-        name="appointment[purpose]"
-        id="purpose"
-        cols="30"
-        rows="3"
-        required={true}
-        bind:value={appointment.remark}
-      />
-    </div>
-		<div
-			class="flex flex-col sm:flex-row justify-center sm:justify-between items-center space-y-3 sm:space-y-0"
-		>
-			<button
-				class="border text-white bg-blue-600 py-2 px-3 rounded-md hover:bg-blue-700"
-				on:click={() => {
-					goto(`/dashboard`);
-				}}>Back</button
-			>
-			<div class="space-x-6">
+		<div class="mt-6 pt-4 border-t border-gray-200">
+			<div class="flex flex-col sm:flex-row justify-between items-center gap-4">
 				<button
-					class="border text-white bg-green-600 py-2 px-3 rounded-md hover:bg-green-700"
-					on:click={() => {
-						handleAppointmentCompletion();
-					}}>Complete Appointment</button
-				>
+					class="w-full sm:w-auto bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-200"
+					on:click={() => goto('/dashboard')}
+				>Back to Dashboard</button>
+				
+				<button
+					class="w-full sm:w-auto bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-200"
+					on:click={handleAppointmentCompletion}
+				>Complete Appointment</button>
 			</div>
 		</div>
 	</div>

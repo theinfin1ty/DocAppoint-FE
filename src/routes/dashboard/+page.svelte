@@ -60,7 +60,7 @@
 {#if loading}
 	<Loader />
 {/if}
-<div>
+<div class="flex-grow pb-8">
 	{#if appointments}
 		<AppointmentsTable {appointments} {onAction} {pagination} heading={'Upcoming Appointments'} role={$user?.profile?.role} />
 	{/if}

@@ -16,5 +16,7 @@
   });
 </script>
 <Navbar />
-<StartAppointment appointmentId={id} />
+<div class="flex-grow">
+  <StartAppointment appointmentId={id} />
+</div>
 <Footer />

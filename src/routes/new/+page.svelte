@@ -18,7 +18,7 @@
 
 </script>
 <Navbar />
-<div>
+<div class="flex-grow pb-8">
   <NewAppointment appointmentId={$appointmentId} />
 </div>
 <Footer />

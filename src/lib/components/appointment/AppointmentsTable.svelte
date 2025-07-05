@@ -29,7 +29,7 @@
 	});
 </script>
 
-<div class="m-10">
+<div class="m-4 sm:m-10">
 	<div class="relative overflow-x-auto sm:rounded-lg">
 		<!-- <div class="flex items-center justify-between pb-4">
 			<div class="relative">
@@ -133,195 +133,143 @@
 				</div>
 			</div>
 		</div> -->
-		<table class="w-full text-sm text-left text-gray-500">
-			<caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-white">
-				{heading}
-				<p class="mt-1 text-sm font-normal text-gray-500">
-					{!appointments?.length ? 'No appointments to show, schedule one now!' : caption}
-				</p>
-			</caption>
-			{#if appointments?.length}
-				<thead class="text-xs text-gray-700 uppercase bg-gray-200">
-					<tr>
-						<th scope="col" class="px-6 py-3">
-							<div class="flex items-center">
-								Patient name
-								<!-- <a href="#"
-								><svg
-									class="w-3 h-3 ml-1.5"
-									aria-hidden="true"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"
-									/>
-								</svg></a
-							> -->
-							</div>
-						</th>
-						<th scope="col" class="px-6 py-3">
-							<div class="flex items-center">
-								Age
-								<!-- <a href="#"
-								><svg
-									class="w-3 h-3 ml-1.5"
-									aria-hidden="true"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"
-									/>
-								</svg></a
-							> -->
-							</div>
-						</th>
-						<th scope="col" class="px-6 py-3">
-							<div class="flex items-center">
-								Type
-								<!-- <a href="#"
-								><svg
-									class="w-3 h-3 ml-1.5"
-									aria-hidden="true"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"
-									/>
-								</svg></a
-							> -->
-							</div>
-						</th>
-						<th scope="col" class="px-6 py-3">
-							<div class="flex items-center">
-								Date
-								<!-- <a href="#"
-								><svg
-									class="w-3 h-3 ml-1.5"
-									aria-hidden="true"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"
-									/>
-								</svg></a
-							> -->
-							</div>
-						</th>
-						<th scope="col" class="px-6 py-3">
-							<div class="flex items-center">
-								Slot
-								<!-- <a href="#"
-								><svg
-									class="w-3 h-3 ml-1.5"
-									aria-hidden="true"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"
-									/>
-								</svg></a
-							> -->
-							</div>
-						</th>
-						<th scope="col" class="px-6 py-3">
-							<div class="flex items-center">
-								Status
-								<!-- <a href="#"
-								><svg
-									class="w-3 h-3 ml-1.5"
-									aria-hidden="true"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="currentColor"
-									viewBox="0 0 24 24"
-								>
-									<path
-										d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"
-									/>
-								</svg></a
-							> -->
-							</div>
-						</th>
-						<th scope="col" class="px-6 py-3">
-							<div class="flex items-center">Action</div>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each appointments as appointment}
-						<tr class="bg-white border-b hover:bg-gray-100">
-							<td class="capitalize px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-								{appointment?.name}
-							</td>
-							<td class="px-6 py-4 capitalize">{appointment?.age}</td>
-							<td class="px-6 py-4 capitalize">{appointment?.type}</td>
-							<td class="px-6 py-4 capitalize">{moment(appointment?.date).format('LL')}</td>
-							<td class="px-6 py-4 capitalize">{appointment?.slot}</td>
-							<td class="px-6 py-4 capitalize">{appointment?.status}</td>
-							<td class="px-6 py-4">
-								<div class="flex gap-2">
-									<a
-										href={`/view/${appointment?._id}`}
-										class="text-blue-600 hover:underline text-sm">View</a
-									>
-									{#if role === 'doctor' && (appointment?.status === 'confirmed' || appointment?.status === 'pending')}
-										<button
-											on:click={() => onAction('complete', appointment)}
-											class="text-green-600 hover:underline text-sm font-medium"
-										>
-											Complete
-										</button>
-									{/if}
-									{#if role === 'client' && (appointment?.status === 'confirmed' || appointment?.status === 'pending')}
-										<button
-											on:click={() => onAction('cancel', appointment)}
-											class="text-red-600 hover:underline text-sm font-medium"
-										>
-											Cancel
-										</button>
-										<a
-											href={`/new?appointmentId=${appointment._id}`}
-											class="text-blue-600 hover:underline text-sm font-medium"
-										>
-											Edit
-										</a>
-									{/if}
-								</div>
-							</td>
+		<!-- Header -->
+		<div class="p-4 sm:p-5 text-lg font-semibold text-left text-gray-900 bg-white border-b">
+			{heading}
+			<p class="mt-1 text-sm font-normal text-gray-500">
+				{!appointments?.length ? 'No appointments to show, schedule one now!' : caption}
+			</p>
+		</div>
+
+		{#if appointments?.length}
+			<!-- Desktop Table -->
+			<div class="hidden md:block">
+				<table class="w-full text-sm text-left text-gray-500">
+					<thead class="text-xs text-gray-700 uppercase bg-gray-200">
+						<tr>
+							<th scope="col" class="px-6 py-3">Patient name</th>
+							<th scope="col" class="px-6 py-3">Age</th>
+							<th scope="col" class="px-6 py-3">Type</th>
+							<th scope="col" class="px-6 py-3">Date</th>
+							<th scope="col" class="px-6 py-3">Slot</th>
+							<th scope="col" class="px-6 py-3">Status</th>
+							<th scope="col" class="px-6 py-3">Action</th>
 						</tr>
-					{/each}
-				</tbody>
-			{/if}
-		</table>
+					</thead>
+					<tbody>
+						{#each appointments as appointment}
+							<tr class="bg-white border-b hover:bg-gray-100">
+								<td class="capitalize px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+									{appointment?.name}
+								</td>
+								<td class="px-6 py-4 capitalize">{appointment?.age}</td>
+								<td class="px-6 py-4 capitalize">{appointment?.type}</td>
+								<td class="px-6 py-4 capitalize">{moment(appointment?.date).format('LL')}</td>
+								<td class="px-6 py-4 capitalize">{appointment?.slot}</td>
+								<td class="px-6 py-4 capitalize">{appointment?.status}</td>
+								<td class="px-6 py-4">
+									<div class="flex gap-2">
+										<a
+											href={`/view/${appointment?._id}`}
+											class="text-blue-600 hover:underline text-sm">View</a
+										>
+										{#if role === 'doctor' && (appointment?.status === 'confirmed' || appointment?.status === 'pending')}
+											<button
+												on:click={() => onAction('complete', appointment)}
+												class="text-green-600 hover:underline text-sm font-medium"
+											>
+												Complete
+											</button>
+										{/if}
+										{#if role === 'client' && (appointment?.status === 'confirmed' || appointment?.status === 'pending')}
+											<button
+												on:click={() => onAction('cancel', appointment)}
+												class="text-red-600 hover:underline text-sm font-medium"
+											>
+												Cancel
+											</button>
+											<a
+												href={`/new?appointmentId=${appointment._id}`}
+												class="text-blue-600 hover:underline text-sm font-medium"
+											>
+												Edit
+											</a>
+										{/if}
+									</div>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+
+			<!-- Mobile Cards -->
+			<div class="md:hidden space-y-4 p-4">
+				{#each appointments as appointment}
+					<div class="bg-white border rounded-lg p-4 shadow-sm">
+						<div class="flex justify-between items-start mb-3">
+							<h3 class="font-semibold text-gray-900 capitalize">{appointment?.name}</h3>
+							<span class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800 capitalize">
+								{appointment?.status}
+							</span>
+						</div>
+						<div class="grid grid-cols-2 gap-2 text-sm text-gray-600 mb-3">
+							<div><span class="font-medium">Age:</span> {appointment?.age}</div>
+							<div><span class="font-medium">Type:</span> {appointment?.type}</div>
+							<div><span class="font-medium">Date:</span> {moment(appointment?.date).format('MMM DD')}</div>
+							<div><span class="font-medium">Time:</span> {appointment?.slot}</div>
+						</div>
+						<div class="flex flex-wrap gap-2">
+							<a
+								href={`/view/${appointment?._id}`}
+								class="text-blue-600 hover:underline text-sm font-medium">View</a
+							>
+							{#if role === 'doctor' && (appointment?.status === 'confirmed' || appointment?.status === 'pending')}
+								<button
+									on:click={() => onAction('complete', appointment)}
+									class="text-green-600 hover:underline text-sm font-medium"
+								>
+									Complete
+								</button>
+							{/if}
+							{#if role === 'client' && (appointment?.status === 'confirmed' || appointment?.status === 'pending')}
+								<button
+									on:click={() => onAction('cancel', appointment)}
+									class="text-red-600 hover:underline text-sm font-medium"
+								>
+									Cancel
+								</button>
+								<a
+									href={`/new?appointmentId=${appointment._id}`}
+									class="text-blue-600 hover:underline text-sm font-medium"
+								>
+									Edit
+								</a>
+							{/if}
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/if}
 		{#if appointments?.length}
 		<nav
-			class="flex items-center justify-between pt-1 bg-gray-50 px-3 pb-3"
+			class="flex flex-col sm:flex-row items-center justify-between pt-1 bg-gray-50 px-3 pb-3 gap-2"
 			aria-label="Table navigation"
 		>
-			<span class="text-sm font-normal text-gray-500"
+			<span class="text-sm font-normal text-gray-500 text-center sm:text-left"
 				>Showing <span class="font-semibold text-gray-900">{start}-{end}</span> of
 				<span class="font-semibold text-gray-900">{total}</span></span
 			>
-			<div class="inline-flex mt-2 xs:mt-0">
-				<!-- Buttons -->
+			<div class="inline-flex">
 				<button
-					class="flex items-center border border-gray-300 justify-center px-4 h-8 text-sm font-semibold rounded-l {page <=
+					class="flex items-center border border-gray-300 justify-center px-3 sm:px-4 h-8 text-sm font-semibold rounded-l {page <=
 					1
 						? 'text-gray-300'
 						: 'hover:bg-gray-300'}"
 					disabled={page <= 1}
 				>
 					<svg
-						class="w-3.5 h-3.5 mr-2"
+						class="w-3.5 h-3.5 mr-1 sm:mr-2"
 						aria-hidden="true"
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -335,18 +283,18 @@
 							d="M13 5H1m0 0 4 4M1 5l4-4"
 						/>
 					</svg>
-					Prev
+					<span class="hidden sm:inline">Prev</span>
 				</button>
 				<button
-					class="flex items-center justify-center px-4 h-8 text-sm font-semibold border border-gray-300 rounded-r {total <=
+					class="flex items-center justify-center px-3 sm:px-4 h-8 text-sm font-semibold border border-gray-300 rounded-r {total <=
 					10
 						? 'text-gray-300'
 						: 'hover:bg-gray-300'}"
 					disabled={total <= 10}
 				>
-					Next
+					<span class="hidden sm:inline">Next</span>
 					<svg
-						class="w-3.5 h-3.5 ml-2"
+						class="w-3.5 h-3.5 ml-1 sm:ml-2"
 						aria-hidden="true"
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"

@@ -113,23 +113,23 @@
 	};
 </script>
 
-<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-	<div class="max-w-md w-full space-y-8">
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
+	<div class="max-w-md w-full space-y-6 sm:space-y-8">
 		<div class="text-center">
-			<h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Myomasafecure</h2>
-			<p class="text-gray-600">Sign in to your account to continue</p>
+			<h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Welcome to Myomasafecure</h2>
+			<p class="text-gray-600 text-sm sm:text-base">Sign in to your account to continue</p>
 		</div>
-		<div class="bg-white rounded-lg shadow-md p-8">
+		<div class="bg-white rounded-lg shadow-md p-6 sm:p-8">
 			<div>
 				{#if $page == 'login'}
 					{#if error}
 						<p class="text-sm text-red-500 mb-3">{typeof error === 'string' ? error : 'Something went wrong'}</p>
 					{/if}
 					<form class="mb-3" on:submit|preventDefault={handleInitiateLogin}>
-						<div class="mb-3">
-							<label class="text-sm" for="email">Email</label>
+						<div class="mb-4">
+							<label class="block text-sm font-medium text-gray-700 mb-1" for="email">Email</label>
 							<input
-								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
+								class="block w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
 								type="email"
 								id="email"
 								name="email"
@@ -145,7 +145,7 @@
 						<div class="flex justify-center items-center">
 							<button
 								id="login-submit"
-								class="border rounded-lg p-3 w-full bg-blue-500 text-white hover:bg-blue-700 mb-3"
+								class="w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 mb-3"
 								type="submit">Send OTP</button
 							>
 						</div>
@@ -174,10 +174,10 @@
 						<p class="text-sm text-red-500">Something went wrong</p>
 					{/if}
 					<form class="mb-3" on:submit|preventDefault={handleLogin}>
-						<div class="mb-3">
-							<label class="text-sm" for="phoneNumber">Enter OTP</label>
+						<div class="mb-4">
+							<label class="block text-sm font-medium text-gray-700 mb-1" for="otp">Enter OTP</label>
 							<input
-								class="block w-full p-2 border-gray-200 text-gray-700 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
+								class="block w-full p-3 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm text-center tracking-widest"
 								type="text"
 								id="otp"
 								name="otp"
@@ -186,11 +186,17 @@
 								required
 							/>
 						</div>
-						<div class="mb-3"><button class="underline text-sm cursor-pointer text-blue-500" on:click={handleInitiateLogin}>Resend OTP</button></div>
+						<div class="mb-4 text-center">
+							<button 
+								type="button"
+								class="underline text-sm cursor-pointer text-blue-500 hover:text-blue-700" 
+								on:click={handleInitiateLogin}
+							>Resend OTP</button>
+						</div>
 						<div class="flex justify-center items-center">
 							<button
 								id="login-submit"
-								class="border rounded-lg p-3 w-full bg-blue-500 text-white hover:bg-blue-700"
+								class="w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200"
 								type="submit">Proceed</button
 							>
 						</div>

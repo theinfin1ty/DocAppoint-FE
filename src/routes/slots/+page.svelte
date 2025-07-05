@@ -14,5 +14,7 @@
 </script>
 
 <Navbar />
-<SlotManagement />
+<div class="flex-grow">
+  <SlotManagement />
+</div>
 <Footer />

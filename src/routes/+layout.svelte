@@ -24,5 +24,7 @@
 	});
 </script>
 
-<slot />
+<div class="min-h-screen flex flex-col">
+	<slot />
+</div>
 <Toast bind:show={$toastStore.show} message={$toastStore.message} type={$toastStore.type} duration={$toastStore.duration} />
